@@ -1,4 +1,4 @@
-@tailwind utilities;
+@import "tailwindcss";
 
 .medimitra-card {
   @apply shadow-md hover:shadow-lg transition-shadow;
