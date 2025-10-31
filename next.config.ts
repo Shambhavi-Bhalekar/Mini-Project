@@ -1,5 +1,4 @@
-module.exports = {
-  experimental: {
-    turbopack: false, // Disable Turbopack
-  },
-};
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+
+module.exports = nextConfig;
