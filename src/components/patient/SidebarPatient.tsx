@@ -47,6 +47,8 @@ export default function PatientSidebar({
     { id: 'connect', icon: PhoneCall, label: 'Connect with Doctor', href: '/patient/connect' },
     { id: 'community', icon: GroupIcon, label: 'Community', href: '/patient/community' },
     { id: 'ChatBot', icon: BotIcon, label: 'Stress Reliever Bot', href: '/patient/chatbot' },
+    { id: 'Ai Calling Assistant', icon: BotIcon, label: 'Vapi', href: '/patient/vapi' },
+
   ];
 
   return (
