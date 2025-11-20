@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { gsap } from 'gsap';
 import Button1 from '@/components/ui/Button1';
+import Link from 'next/link';
 
 const HeroSection: React.FC = () => {
   useEffect(() => {
@@ -53,14 +54,18 @@ const HeroSection: React.FC = () => {
               Meet your digital doctor. We analyze your prescriptions instantly to detect potential drug interactions, allergic risks, and dosage errors.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <Link href="/login" >
               <Button1
                 variant="primary"
                 size="lg"
                 className="cta-button"
-                icon={<ArrowIcon />}
+                icon={<ArrowIcon />
+                }
               >
                 Get Started Free
               </Button1>
+              </Link>
+              
               <Button1
                 variant="secondary"
                 size="lg"

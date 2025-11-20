@@ -4,47 +4,33 @@ import TeamMemberCard from '@/components/ui/TeamMemberCard';
 const TeamSection: React.FC = () => {
   const teamMembers = [
     {
-      name: 'Aran Angadi',
-      role: 'Machine Learning Engineer',
-      description: 'Expert in medical NLP and computer vision algorithms.',
-      initial: 'A',
-      socialLinks: {
-        twitter: '#',
-        linkedin: '#',
-        github: '#'
-      }
-    },
-    {
-      name: 'Mayank Chauhan',
-      role: 'Backend Developer',
-      description: 'Specializes in secure healthcare data infrastructure.',
-      initial: 'M',
-      socialLinks: {
-        twitter: '#',
-        linkedin: '#',
-        github: '#'
-      }
-    },
-    {
-      name: 'Jovan Fernandes',
-      role: 'Frontend Developer',
-      description: 'Creates intuitive and accessible user interfaces.',
-      initial: 'J',
-      socialLinks: {
-        twitter: '#',
-        linkedin: '#',
-        github: '#'
-      }
-    },
-    {
       name: 'Shambhavi Bhalekar',
-      role: 'Medical AI Researcher',
-      description: 'Ensures medical accuracy and healthcare compliance.',
+      role: 'Backend & Integration Engineer',
+      description: 'Handled backend development, system integration, and end‑to‑end workflow management.',
       initial: 'S',
       socialLinks: {
-        twitter: '#',
+        linkedin: 'https://www.linkedin.com/in/shambhavi-bhalekar-73597b306/',
+        github: 'http://github.com/shambhavi-bhalekar'
+      }
+    },
+    {
+      name: 'Amruta Johare',
+      role: 'Frontend Developer & Model Builder',
+      description: 'Developed the frontend and contributed to model building processes.',
+      initial: 'A',
+      socialLinks: {
         linkedin: '#',
         github: '#'
+      }
+    },
+    {
+      name: 'Preksha Salvi',
+      role: 'System Architect & Model Builder',
+      description: 'Handled architecture design and contributed to building the machine learning models.',
+      initial: 'P',
+      socialLinks: {
+        linkedin: 'https://www.linkedin.com/in/preksha-salvi-87871728b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+        github: 'https://github.com/preksah'
       }
     }
   ];

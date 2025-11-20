@@ -28,10 +28,6 @@ export default function AllergiesSection({ patientData, setPatientData }) {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-2">
         <label className="text-lg font-medium text-blue-700">Allergies</label>
-        <button onClick={addAllergy} className="flex items-center text-blue-600 hover:text-blue-800">
-          <PlusCircle size={20} className="mr-1" />
-          Add Allergy
-        </button>
       </div>
       <div className="space-y-3">
         {patientData.allergies.map((allergy, index) => (

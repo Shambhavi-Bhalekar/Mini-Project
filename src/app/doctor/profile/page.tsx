@@ -124,7 +124,7 @@ export default function DoctorDetailsPage() {
       await setDoc(
       docRef,
       {
-        uid: user.uid, // ← ensures doctor UID is stored in their doc
+        uid: user.uid, 
         [key]: data,
         lastUpdated: new Date().toISOString(),
       },
