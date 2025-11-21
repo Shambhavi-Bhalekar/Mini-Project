@@ -1,108 +1,77 @@
 // src/app/api/vapi/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+//@ts-nocheck
+import { NextRequest, NextResponse } from "next/server";
 
 const BLAND_API_KEY = process.env.BLAND_API_KEY;
-const BLAND_API_URL = 'https://api.bland.ai/v1/calls';
+const BLAND_API_URL = "https://api.bland.ai/v1/calls";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { phoneNumber, patientName, appointmentDetails } = body;
+    const { userId, phoneNumber, patientName } = await request.json();
+
+    if (!userId) {
+      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+    }
 
     if (!phoneNumber) {
-      return NextResponse.json(
-        { error: 'Phone number is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Phone number missing" }, { status: 400 });
     }
 
-    // Prepare the call payload for Bland AI
-    const callPayload = {
+    const payload = {
       phone_number: phoneNumber,
-      task: `You are a friendly healthcare assistant calling ${patientName || 'the patient'} for a comfort check-in. ${
-        appointmentDetails 
-          ? `They have an upcoming appointment: ${appointmentDetails}.` 
-          : ''
-      } Ask how they're feeling, if they have any concerns, and remind them about their appointment if applicable. Be empathetic, warm, and professional.`,
-      voice: 'maya', // You can customize the voice
-      max_duration: 5, // Max call duration in minutes
+      voice: "e1289219-0ea2-4f22-a994-c542c2a48a0f",
+      wait_for_greeting: false,
       record: true,
-      wait_for_greeting: true,
-      language: 'en',
+      model: "base",
+      max_duration: 12,
+      language: "en",
+      answered_by_enabled: true,
+      task: `You are Jean, an emotional support assistant who is a therapist for ${patientName}.Do NOT verify the user's identity. 
+Do NOT ask for their name. 
+Do NOT say you may have dialed a wrong number. if the patient is stress say something that will make the patient feel better`,
     };
 
-    // Make the API call to Bland AI
-    const response = await fetch(BLAND_API_URL, {
-      method: 'POST',
+    const res = await fetch(BLAND_API_URL, {
+      method: "POST",
       headers: {
-        'Authorization': BLAND_API_KEY!,
-        'Content-Type': 'application/json',
+        Authorization: BLAND_API_KEY!,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(callPayload),
+      body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    const data = await res.json();
+
+    if (!res.ok) {
       return NextResponse.json(
-        { error: 'Failed to initiate call', details: errorData },
-        { status: response.status }
+        { error: "Bland API failed", details: data },
+        { status: 500 }
       );
     }
-
-    const data = await response.json();
 
     return NextResponse.json({
       success: true,
       callId: data.call_id,
       status: data.status,
-      message: 'Call initiated successfully',
+      message: "Comfort call started",
     });
 
-  } catch (error) {
-    console.error('Error initiating Bland AI call:', error);
+  } catch (err) {
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: "Invalid request", details: err.message },
       { status: 500 }
     );
   }
 }
 
-// Get call status
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const callId = searchParams.get('callId');
+export async function GET(req: NextRequest) {
+  const callId = req.nextUrl.searchParams.get("callId");
+  if (!callId) return NextResponse.json({ error: "callId missing" }, { status: 400 });
 
-    if (!callId) {
-      return NextResponse.json(
-        { error: 'Call ID is required' },
-        { status: 400 }
-      );
-    }
+  const res = await fetch(`https://api.bland.ai/v1/calls/${callId}`, {
+    headers: { Authorization: BLAND_API_KEY! },
+  });
 
-    const response = await fetch(`${BLAND_API_URL}/${callId}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': BLAND_API_KEY!,
-      },
-    });
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: 'Failed to fetch call status' },
-        { status: response.status }
-      );
-    }
-
-    const data = await response.json();
-
-    return NextResponse.json(data);
-
-  } catch (error) {
-    console.error('Error fetching call status:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
-  }
+  const data = await res.json();
+  return NextResponse.json(data);
 }

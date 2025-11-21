@@ -1,11 +1,14 @@
 // src/app/api/vapi/webhook/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
+// NOTE: Bland may sign webhooks. If Bland provides a secret/signature header,
+// validate it here. This example just logs and returns OK.
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    // Bland AI sends webhook data about call status
+
+    // Bland AI webhook fields (example)
     const {
       call_id,
       status,
@@ -14,56 +17,36 @@ export async function POST(request: NextRequest) {
       transcript,
       summary,
       error_message,
+      phone_number,
     } = body;
 
     console.log('Bland AI Webhook received:', {
       call_id,
       status,
       duration,
+      phone_number,
+      recording_url: !!recording_url,
+      transcript: transcript ? transcript.slice?.(0, 200) : null,
     });
 
-    // Here you can:
-    // 1. Update your database with call results
-    // 2. Send notifications to staff
-    // 3. Trigger follow-up actions
-    // 4. Store transcripts and recordings
+    // No DB writes per your request — just log and return success.
+    // If you later want to store call results, add DB logic here.
 
-    // Example: Save to database (implement your DB logic)
-    // await db.calls.update({
-    //   where: { callId: call_id },
-    //   data: {
-    //     status,
-    //     duration,
-    //     recordingUrl: recording_url,
-    //     transcript,
-    //     summary,
-    //     errorMessage: error_message,
-    //     completedAt: new Date(),
-    //   },
-    // });
-
-    // Example: Send notification if call failed
+    // If call failed, optionally send notifications (not implemented).
     if (status === 'failed') {
       console.error(`Call ${call_id} failed:`, error_message);
-      // Implement notification logic here
+      // Optionally trigger notification/email here
     }
 
-    // Example: Process transcript if call completed
+    // If completed and transcript present, you could run further processing here.
     if (status === 'completed' && transcript) {
-      console.log(`Call ${call_id} completed. Transcript:`, transcript);
-      // Analyze transcript, extract insights, etc.
+      // e.g., analyze transcript with AI, summarize, etc.
+      console.log(`Call ${call_id} completed; transcript length: ${transcript.length}`);
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Webhook processed successfully' 
-    });
-
-  } catch (error) {
-    console.error('Error processing webhook:', error);
-    return NextResponse.json(
-      { error: 'Failed to process webhook' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: true, message: 'Webhook processed' });
+  } catch (err) {
+    console.error('Error processing Bland webhook:', err);
+    return NextResponse.json({ error: 'Failed to process webhook' }, { status: 500 });
   }
 }
