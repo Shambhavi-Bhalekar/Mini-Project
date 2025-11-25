@@ -7,6 +7,7 @@ import type { ComfortCallPayload, ComfortCallResponse } from '@/types/bland';
 export function useComfortCall() {
   const [loading, setLoading] = useState(false);
   
+  
   const [error, setError] = useState<string | null>(null);
   const [callData, setCallData] = useState<ComfortCallResponse | null>(null);
 
