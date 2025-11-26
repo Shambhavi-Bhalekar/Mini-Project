@@ -31,11 +31,12 @@ export default function DoctorSidebar({ sidebarOpen, setSidebarOpen }: DoctorSid
       href: '/doctor/dashboard',
       color: 'from-blue-500 to-blue-600'
     },
+    
     { 
-      id: 'ai-detection', 
+      id: 'detection', 
       label: 'AI Tumor Detection', 
       icon: Brain, 
-      href: '/doctor/ai-detection',
+      href: '/doctor/detection',
       color: 'from-purple-500 to-purple-600'
     },
     { 
