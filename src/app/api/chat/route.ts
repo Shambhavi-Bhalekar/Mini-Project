@@ -2,19 +2,31 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// console.log(process.env.GEMINI_API_KEY)
 
 export async function POST(req: Request) {
   try {
-    const { message } = await req.json();
+    const { message, history } = await req.json();
+    const historyArray = Array.isArray(history) ? history : [];
 
-    // Just a single string prompt
-    const result = await model.generateContent(message);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    // Always return text as { reply: ... }
+    const result = await model.generateContent({
+      contents: [
+        ...historyArray.map((msg: any) => ({
+          role: msg.role,
+          parts: [{ text: msg.content }],
+        })),
+        { role: "user", parts: [{ text: message }] },
+      ],
+    });
+
     return NextResponse.json({ reply: result.response.text() });
-  } catch (err: any) {
-    console.error("Gemini API Error:", err);
-    return NextResponse.json({ reply: "Error contacting AI" }, { status: 500 });
+  } catch (error) {
+    console.error("Gemini API error:", error);
+    return NextResponse.json(
+      { reply: "Error talking to Gemini." },
+      { status: 500 }
+    );
   }
 }
