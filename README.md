@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏥 MediMitra – AI-Powered Healthcare Platform
 
-## Getting Started
+MediMitra is a full-stack healthcare web application that integrates AI-based tumor detection with hospital management features. The platform enables patients to upload medical scans for automated tumor segmentation and risk analysis, while providing appointment booking, chatbot assistance, and health record management.
 
-First, run the development server:
+> Built to demonstrate full-stack development, machine learning integration, and REST-based microservice architecture.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📌 Problem Statement
+
+Early tumor detection and medication verification are critical in healthcare, yet manual diagnosis can be time-consuming and prone to delays.
+
+MediMitra aims to:
+- Assist doctors with AI-based tumor segmentation
+- Provide patients with actionable risk insights
+- Enable fully digital appointment management
+- Offer chatbot-based assistance and support
+
+---
+
+## 🚀 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | Next.js (App Router), TypeScript, Tailwind CSS |
+| **ML Backend** | Python, FastAPI, PyTorch |
+| **AI Model** | U-Net (Biomedical Image Segmentation) |
+| **Image Processing** | OpenCV, NumPy |
+
+---
+
+## 🧠 AI Model – Tumor Detection
+
+### Model: U-Net (CNN for Image Segmentation)
+
+**Why U-Net?**
+- Designed specifically for biomedical image segmentation
+- Captures both contextual and spatial information via encoder-decoder architecture
+- Performs well with limited annotated medical datasets
+
+### Inference Pipeline
+
+```
+Image Upload → Preprocessing (resize, normalize) → U-Net Inference
+    → Segmentation Mask → Heatmap Overlay → Risk Classification
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Input:** MRI / CT scan image  
+**Output:** Segmented tumor region, heatmap visualization, risk classification result
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Core Features
 
-## Learn More
+### 🔬 AI Tumor Detection
+- Upload MRI/CT scan images
+- Automated tumor segmentation using U-Net
+- Heatmap visualization of affected regions
+- Risk level classification output
 
-To learn more about Next.js, take a look at the following resources:
+### 📅 Doctor Appointment Booking
+- Smart availability-based scheduling
+- Booking confirmation and follow-up reminders
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🤖 AI Chatbot Assistant
+- Personalized medical guidance responses
+- Escalation pathway to doctor consultation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 💊 Prescription & Risk Verification
+- AI-based prescription analysis
+- Cross-referencing with patient risk factors
 
-## Deploy on Vercel
+### 👥 Community Support Platform
+- Patient interaction space
+- Q&A support system
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🏗 System Architecture
+
+```
+User (Browser)
+     ↓
+Next.js Frontend (Port 3000)
+     ↓  REST API
+Python ML Backend (FastAPI/Flask)
+     ↓
+U-Net Model Inference
+     ↓
+Segmentation + Risk Analysis Response
+```
+
+---
+
+## 📂 Project Structure
+
+```
+Mini-Project/
+│
+├── backend/
+│   ├── models/              # Saved ML model weights
+│   ├── inference.py         # Inference pipeline
+│   ├── unet_wrapper.py      # U-Net model integration
+│   ├── main.py              # API entry point
+│   └── requirements.txt     # Python dependencies
+│
+└── src/
+    ├── app/                 # Next.js App Router pages
+    ├── components/          # Reusable UI components
+    ├── hooks/               # Custom React hooks
+    ├── lib/                 # Utility functions
+    └── types/               # TypeScript type definitions
+```
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repo-link>
+cd Mini-Project
+```
+
+### 2. Frontend Setup
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+### 3. Backend Setup
+
+```bash
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start backend server
+python main.py
+```
+
+---
+
+## 🌟 Learning Outcomes
+
+- Practical implementation of U-Net architecture for medical image segmentation
+- REST-based ML microservice design and integration
+- Frontend–backend communication across a full-stack application
+- Medical image preprocessing techniques (normalization, mask generation, heatmap overlay)
+- Debugging and resolving real-world ML deployment issues
+
+---
+
+## 📜 License
+
+This project is developed for educational and research purposes.
